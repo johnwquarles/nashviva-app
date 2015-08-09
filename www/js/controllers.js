@@ -51,3 +51,7 @@ angular.module('nashviva.controllers', [])
     $state.go("login");
   }
 })
+
+.controller('MapCtrl', function($scope) {})
+
+.controller('ProfileCtrl', function($scope) {})

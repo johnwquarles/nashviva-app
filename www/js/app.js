@@ -18,7 +18,6 @@ angular.module('nashviva', ['ionic', 'firebase', 'ngCordova', 'nashviva.factorie
   });
 })
 
-
 // catching $stateChangeErrors that arise when user is directed to secure area
 // while not logged in; redirects to login page.
 .run(function($rootScope, $state) {
@@ -50,7 +49,37 @@ angular.module('nashviva', ['ionic', 'firebase', 'ngCordova', 'nashviva.factorie
           return Auth.$requireAuth();
         }
       }
-    });
+    })
+
+    // setup an abstract state for the tabs directive
+    .state('tab', {
+      url: "/tab",
+      abstract: true,
+      templateUrl: "templates/tabs.html"
+    })
+
+    // Each tab has its own nav history stack:
+
+    .state('tab.map', {
+      url: '/map',
+      views: {
+        'tab-map': {
+          templateUrl: 'templates/map.html',
+          controller: 'MapCtrl'
+        }
+      }
+    })
+
+    .state('tab.profile', {
+        url: '/profile',
+        views: {
+          'tab-profile': {
+            templateUrl: 'templates/profile.html',
+            controller: 'ProfileCtrl'
+          }
+        }
+      });
+
   // send user to /secure area by default; will stay there if authentication data is present
   // (user is logged in) or will be redirected to login page if not (see above).
   $urlRouterProvider.otherwise('/secure');
