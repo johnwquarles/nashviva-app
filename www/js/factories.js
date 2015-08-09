@@ -2,8 +2,8 @@ angular.module('nashviva.factories', [])
 
 .factory("Auth", ["$firebaseAuth",
   function($firebaseAuth) {
-    var fb = new Firebase("https://nashviva.firebaseio.com/");
-    return $firebaseAuth(fb);
+    var ref = new Firebase("https://nashviva.firebaseio.com/");
+    return $firebaseAuth(ref);
   }
 ])
 

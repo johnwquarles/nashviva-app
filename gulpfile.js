@@ -44,7 +44,8 @@ gulp.task('bower', function() {
   gulp
     .src(["www/lib/ngCordova/dist/ng-cordova.min.js",
          "www/lib/firebase/firebase.js",
-         "www/lib/angularfire/dist/angularfire.min.js"])
+         "www/lib/angularfire/dist/angularfire.min.js",
+         "www/lib/ng-cordova-oauth/dist/ng-cordova-oauth.min.js"])
     .pipe(concat('build.js'))
     .pipe(uglify())
     .pipe(gulp.dest('www/js'));
