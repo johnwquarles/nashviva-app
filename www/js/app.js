@@ -34,21 +34,10 @@ angular.module('nashviva', ['ionic', 'firebase', 'ngCordova', 'nashviva.factorie
       url: "/login",
       templateUrl: "templates/login.html",
       controller: "facebookLoginCtrl",
+      onEnter: function(Auth, $state) {
+        if (Auth.$getAuth()) {$state.go("tab.map");}
+      },
       cache: false,
-    })
-    // below: resolve is checking for user authentication before sending to the secure area.
-    // Auth is a factory returning $firebaseAuth(ref); promise is resolved if authenticated,
-    // rejected if not with a $stateChangeError and caught above;
-    // see https://www.firebase.com/docs/web/libraries/angular/guide/user-auth.html#section-routers
-    .state("secure", {
-      url: "/secure",
-      templateUrl: "templates/secure.html",
-      controller: "secureCtrl",
-      resolve: {
-        "currentAuth": function(Auth) {
-          return Auth.$requireAuth();
-        }
-      }
     })
 
     // setup an abstract state for the tabs directive
@@ -60,13 +49,22 @@ angular.module('nashviva', ['ionic', 'firebase', 'ngCordova', 'nashviva.factorie
 
     // Each tab has its own nav history stack:
 
+    // below: resolve is checking for user authentication before sending to the secure area.
+    // Auth is a factory returning $firebaseAuth(ref); promise is resolved if authenticated,
+    // rejected if not with a $stateChangeError and caught above;
+    // see https://www.firebase.com/docs/web/libraries/angular/guide/user-auth.html#section-routers
     .state('tab.map', {
       url: '/map',
       views: {
         'tab-map': {
           templateUrl: 'templates/map.html',
           controller: 'MapCtrl'
+        },
+      resolve: {
+        "currentAuth": function(Auth) {
+          return Auth.$requireAuth();
         }
+      }
       }
     })
 
@@ -82,5 +80,5 @@ angular.module('nashviva', ['ionic', 'firebase', 'ngCordova', 'nashviva.factorie
 
   // send user to /secure area by default; will stay there if authentication data is present
   // (user is logged in) or will be redirected to login page if not (see above).
-  $urlRouterProvider.otherwise('/secure');
+  $urlRouterProvider.otherwise('/login');
 })

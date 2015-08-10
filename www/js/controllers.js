@@ -1,17 +1,14 @@
 angular.module('nashviva.controllers', [])
 
-//for device (this is the actual code)
+//for device (this is the actual code for use on phones)
 .controller('facebookLoginCtrl', function($scope, $cordovaOauth, $state, Auth) {
-
-  // send back to secured area if user somehow gets to login screen while logged in.
-  if (Auth.$getAuth()) {$state.go("secure")}
 
   $scope.login = function() {
     $cordovaOauth.facebook("526183770866828", ["email"]).then(function(result) {
       Auth.$authWithOAuthToken("facebook", result.access_token).then(function(authData) {
         console.log(JSON.stringify(authData));
         // redirect to secure area
-        $state.go("secure");
+        $state.go("tab.map");
       }, function(error) {
         console.error("ERROR: " + error);
       });
@@ -22,11 +19,9 @@ angular.module('nashviva.controllers', [])
 })
 
 
-// // //for debugging in browser
+// // //for debugging in browser (comment out above and uncomment this to debug in browser)
 // .controller("facebookLoginCtrl", function($scope, $firebaseAuth, $state, Auth) {
 //   var ref = new Firebase("https://nashviva.firebaseio.com/");
-
-//   if (Auth.$getAuth()) {$state.go("secure")}
 
 //   $scope.login = function () {
 //     ref.authWithOAuthPopup("facebook", function(error, authData) {
@@ -37,21 +32,17 @@ angular.module('nashviva.controllers', [])
 //         });
 //       } else {
 //         console.log("Authenticated successfully with payload:", authData);
-//         // *A like below: using Auth instead of $firebaseAuth(ref).$getAUth
-//         console.log(Auth.$getAuth());
-//         $state.go("secure");
+//         $state.go("tab.map");
 //       }
 //     });
 //   }
 // })
 
-.controller('secureCtrl', function($scope, $state, Auth) {
+.controller('MapCtrl', function($scope, $state, Auth) {
   $scope.logout = function() {
     Auth.$unauth();
     $state.go("login");
   }
 })
-
-.controller('MapCtrl', function($scope) {})
 
 .controller('ProfileCtrl', function($scope) {})
